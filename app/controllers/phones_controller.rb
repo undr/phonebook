@@ -1,6 +1,6 @@
 class PhonesController < ApplicationController
   respond_to :js, :html
-  before_filter :find_model, except: [:index, :new, :create]
+  before_filter :find_model, except: [:index, :new, :create, :export, :inport]
 
   def index
     @phones = Phone.all
@@ -42,6 +42,10 @@ class PhonesController < ApplicationController
   end
 
   def delete
+  end
+
+  def export
+    send_data Phone.export, type: 'text/csv', filename: "phones-#{DateTime.now.to_s(:number)}", disposition: 'inline'
   end
 
   private

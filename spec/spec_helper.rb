@@ -10,7 +10,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  #config.include Mongoid::Matchers
+  config.include Mongoid::Matchers
 
   config.before :suite do
     DatabaseCleaner[:mongoid].strategy = :truncation
