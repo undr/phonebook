@@ -1,0 +1,8 @@
+<%= form_for(@phone, url: { action: :destroy }, html: { method: :delete }) do |f| %>
+  <p>Are you sure you want to delete the phone number <%= @phone.number %> (<%= @phone.name %>)?</p>
+
+  <div class="footer">
+    <%= link_to 'No', :back %>
+    <button type="submit">Yes &raquo;</button>
+  </div>
+<% end %>

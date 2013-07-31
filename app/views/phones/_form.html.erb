@@ -1,0 +1,26 @@
+<h1><%= @phone.new_record? ? 'New phone' : 'Editing phone' %></h1>
+
+<%= form_for(@phone, remote: true) do |f| %>
+  <% if @phone.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @phone.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :number %><br />
+    <%= f.text_field :number %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+    <%= link_to 'Back', phones_path, id: 'cancel-button' %>
+  </div>
+<% end %>

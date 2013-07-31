@@ -1,0 +1,6 @@
+<tr class='phone' id='phone-<%= phone.id %>'>
+  <td><%= phone.name %></td>
+  <td><%= phone.number %></td>
+  <td><%= link_to 'Edit', edit_phone_path(phone), remote: true %></td>
+  <td><%= link_to 'Destroy', delete_phone_path(phone), confirm: 'Are you sure?', method: :delete, remote: true %></td>
+</tr>
