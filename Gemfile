@@ -16,8 +16,5 @@ group :test do
   gem 'rspec-rails', '~> 2.13.2', require: 'rspec/rails'
   gem 'mongoid-rspec', '>= 1.8.1'
   gem 'fabrication', '~> 2.7.2'
-  gem 'forgery', '>= 0.5.0'
   gem 'database_cleaner', '>= 1.0.1'
-  gem 'timecop', '>= 0.6.1'
-  gem 'fakeredis', '>= 0.4.2'
 end
