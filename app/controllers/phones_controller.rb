@@ -1,6 +1,6 @@
 class PhonesController < ApplicationController
   respond_to :js, :html
-  before_filter :find_model, except: [:index, :new, :create, :export, :inport]
+  before_filter :find_model, except: [:index, :new, :create, :export, :import, :process_import]
 
   def index
     @phones = Phone.all
@@ -46,6 +46,10 @@ class PhonesController < ApplicationController
 
   def export
     send_data Phone.export, type: 'text/csv', filename: "phones-#{DateTime.now.to_s(:number)}", disposition: 'inline'
+  end
+
+  def process_import
+    @errors = Phone.import(params[:file].read)
   end
 
   private

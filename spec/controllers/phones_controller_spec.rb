@@ -67,7 +67,7 @@ describe PhonesController do
 
   describe "PUT 'update'" do
     context 'with html format' do
-      let(:phone){Fabricate(:phone)}
+      let(:phone){ Fabricate(:phone) }
 
       before{ put :update, id: phone.id, phone: { number: '+1 876 54 32' } }
 
@@ -80,7 +80,7 @@ describe PhonesController do
     end
 
     context 'with js format' do
-      let(:phone){Fabricate(:phone)}
+      let(:phone){ Fabricate(:phone) }
 
       before{ put :update, id: phone.id, phone: { number: '+1 876 54 32' }, format: :js }
 
@@ -95,7 +95,7 @@ describe PhonesController do
 
   describe "DELETE 'destroy'" do
     context 'with html format' do
-      let(:phone){Fabricate(:phone)}
+      let(:phone){ Fabricate(:phone) }
 
       before{ delete :destroy, id: phone.id }
 
@@ -104,7 +104,7 @@ describe PhonesController do
     end
 
     context 'with js format' do
-      let(:phone){Fabricate(:phone)}
+      let(:phone){ Fabricate(:phone) }
 
       before{ delete :destroy, id: phone.id, format: :js }
 
@@ -114,11 +114,29 @@ describe PhonesController do
   end
 
   describe "GET 'delete'" do
-    let(:phone){Fabricate(:phone)}
+    let(:phone){ Fabricate(:phone) }
 
     before{ get :delete, id: phone.id }
 
     specify{ response.should render_template :delete }
+    specify{ response.should be_success }
+  end
+
+  describe "GET 'import'" do
+    before{ get :import }
+
+    specify{ response.should render_template :import }
+    specify{ response.should be_success }
+  end
+
+  describe "POST 'process_import'" do
+    let(:file){ fixture_file_upload(Rails.root.join('spec/files/phones.csv').to_s, 'text/csv') }
+
+    before{ post :process_import, file: file }
+
+    specify{ Phone.count.should eq(2) }
+    specify{ assigns(:errors).should eq([]) }
+    specify{ response.should render_template :process_import }
     specify{ response.should be_success }
   end
 end

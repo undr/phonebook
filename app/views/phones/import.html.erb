@@ -1,0 +1,13 @@
+<h1>Import phones from CSV (tab-separated)</h1>
+
+<%= form_tag import_phones_path, multipart: true do %>
+  <label for="file">File to Upload</label>
+  <%= file_field_tag "file" %>
+  <%= submit_tag 'Import' %>
+<% end %>
+
+<hr />
+<%= link_to 'Back', phones_path %>
+
+<br />
+<hr />

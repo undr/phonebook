@@ -1,0 +1,33 @@
+<h1>Import was completed</h1>
+
+<% if @errors.present? %>
+  <%= pluralize(@errors.size, 'item') %> out of sync due to validation errors:
+
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Number</th>
+      <th>Errors</th>
+    </tr>
+
+    <% @errors.each do |phone| %>
+      <tr>
+        <td><%= phone.name %></td>
+        <td><%= phone.number %></td>
+        <td>
+          <ul>
+            <% phone.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<hr />
+<%= link_to 'Back', phones_path %>
+
+<br />
+<hr />
