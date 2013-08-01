@@ -9,9 +9,7 @@ class PhonesController < ApplicationController
   def new
     @phone = Phone.new
 
-    respond_with do |format|
-      format.html { render layout: !request.xhr? }
-    end
+    respond_with(@phone)
   end
 
   def edit

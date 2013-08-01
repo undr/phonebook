@@ -2,7 +2,6 @@
   $('#phones').append( '<%= escape_javascript(render @phone) %>' );
   $('#form-placeholder').html('');
 <% else %>
-  console.log('errors');
   var $form = $('#new_phone'), $errorDiv = $('<div id="error_explanation">'), $errorList = $('<ul>');
 
   <% @phone.errors.full_messages.each do |msg| %>

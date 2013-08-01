@@ -27,11 +27,13 @@ CSV
     context 'with empty phonebook' do
       before{ Phone.import(csv_data) }
 
-      specify{ Phone.count.should eq(2) }
-      specify{ Phone.first.name.should eq('John F. Kennedy') }
-      specify{ Phone.first.number.should eq('+1 234 56 78') }
-      specify{ Phone.last.name.should eq('Abraham Lincoln') }
-      specify{ Phone.last.number.should eq('+1 876 54 32') }
+      subject{ Phone }
+
+      its(:count){ should eq(2) }
+      its('first.name'){ should eq('John F. Kennedy') }
+      its('first.number'){ should eq('+1 234 56 78') }
+      its('last.name'){ should eq('Abraham Lincoln') }
+      its('last.number'){ should eq('+1 876 54 32') }
     end
 
     context 'with same items in phonebook' do
