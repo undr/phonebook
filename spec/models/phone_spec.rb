@@ -16,6 +16,18 @@ Abraham Lincoln\t+1 876 54 32
 CSV
   }
 
+  describe 'validation phone number' do
+    let(:only_digits){Fabricate.build(:phone, number: '1234567')}
+    let(:digits_and_allowed_symbols){Fabricate.build(:phone, number: '123 45-67#89')}
+    let(:started_with_plus){Fabricate.build(:phone, number: '+123 45-67#89')}
+    let(:not_allowed_symbols){Fabricate.build(:phone, number: '+123 45K-67#89c')}
+
+    specify{ only_digits.valid?.should be_true }
+    specify{ digits_and_allowed_symbols.valid?.should be_true }
+    specify{ started_with_plus.valid?.should be_true }
+    specify{ not_allowed_symbols.valid?.should be_false }
+  end
+
   describe '.export' do
     let!(:item1){ Fabricate(:phone) }
     let!(:item2){ Fabricate(:lincolns_phone) }

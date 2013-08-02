@@ -6,6 +6,7 @@ class Phone
   field :number, type: String
 
   validates :name, :number, presence: true, uniqueness: true
+  validates :number, format: {with: /^\+?([\d\#\s\-])*$/}
 
   class << self
     def import string
