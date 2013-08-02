@@ -47,7 +47,7 @@ class PhonesController < ApplicationController
   end
 
   def process_import
-    @errors = Phone.import(params[:file].read)
+    @errors = Phone.import(params[:file].read, !!params[:destroy_all])
   end
 
   private

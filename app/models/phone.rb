@@ -9,15 +9,15 @@ class Phone
   validates :number, format: {with: /^\+?([\d\#\s\-])*$/}
 
   class << self
-    def import string
+    def import string, destroy_all = false
+      Phone.destroy_all if destroy_all
+
       invalid_phones = []
       CSV.parse(string, headers: true, col_sep: "\t") do |row|
         next if row.to_a.join.blank?
 
         name, number = row.fields
-        Phone.find_or_initialize_by(name: name).sync_number(number) do |phone|
-          invalid_phones << phone
-        end
+        Phone.find_or_initialize_by(name: name).sync_number(number){|phone| invalid_phones << phone }
       end
       invalid_phones
     end
@@ -33,6 +33,9 @@ class Phone
   end
 
   def sync_number number
+    return if number.blank? && self.new_record?
+    return self.destroy if number.blank?
+
     if self.number != number
       self.number = number
       yield self unless save

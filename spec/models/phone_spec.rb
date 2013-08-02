@@ -37,7 +37,10 @@ CSV
 
   describe '.import' do
     context 'with empty phonebook' do
-      before{ Phone.import(csv_data) }
+      before do
+        Phone.should_not_receive(:destroy_all)
+        Phone.import(csv_data)
+      end
 
       subject{ Phone }
 
@@ -53,11 +56,13 @@ CSV
       let!(:item2){ Fabricate(:lincolns_phone, number: '+12 987 65 43') }
 
       it 'should not add new items' do
+        Phone.should_not_receive(:destroy_all)
         Phone.import(csv_data)
         Phone.count.should eq(2)
       end
 
       it 'should change phone number' do
+        Phone.should_not_receive(:destroy_all)
         Phone.import(csv_data)
         item2.reload
         item2.number.should eq('+1 876 54 32')
@@ -69,8 +74,39 @@ CSV
       let!(:item2){ Fabricate(:phone, name: 'Richard Nixon', number: '+12 987 65 43') }
 
       it 'should add new item' do
+        Phone.should_not_receive(:destroy_all)
         Phone.import(csv_data)
         Phone.count.should eq(3)
+      end
+    end
+
+    context 'with row for deleting' do
+      let!(:item1){ Fabricate(:phone) }
+      let!(:item2){ Fabricate(:lincolns_phone, number: '+12 987 65 43') }
+      let(:csv_data){ <<-CSV
+name\tnumber
+John F. Kennedy\t+1 234 56 78
+Abraham Lincoln\t
+CSV
+      }
+
+      it 'should delete one items' do
+        Phone.should_not_receive(:destroy_all)
+        Phone.import(csv_data)
+        Phone.count.should eq(1)
+      end
+
+      it "should delete Abraham Lincoln's phone number" do
+        Phone.should_not_receive(:destroy_all)
+        Phone.import(csv_data)
+        Phone.where(name: 'Abraham Lincoln').count.should eq(0)
+      end
+    end
+
+    context 'with destroy_all options' do
+      it 'should destroy all phone numbers before importing' do
+        Phone.should_receive(:destroy_all)
+        Phone.import(csv_data, true)
       end
     end
 
