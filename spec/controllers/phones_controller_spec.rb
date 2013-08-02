@@ -122,6 +122,14 @@ describe PhonesController do
     specify{ response.should be_success }
   end
 
+  describe "GET 'export'", time_freeze: DateTime.now do
+    before{ get :export }
+
+    specify{ response.header['Content-Type'].should eq('text/csv') }
+    specify{ response.header['Content-Disposition'].should eq("attachment; filename=\"phones-#{DateTime.now.to_s(:number)}.csv\"") }
+    specify{ response.should be_success }
+  end
+
   describe "GET 'import'" do
     before{ get :import }
 

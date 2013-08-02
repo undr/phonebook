@@ -17,4 +17,5 @@ group :test do
   gem 'mongoid-rspec', '>= 1.8.1'
   gem 'fabrication', '~> 2.7.2'
   gem 'database_cleaner', '>= 1.0.1'
+  gem 'timecop', '>= 0.6.1'
 end

@@ -20,4 +20,8 @@ RSpec.configure do |config|
   config.after :each do
     DatabaseCleaner[:mongoid].clean
   end
+
+  config.around :each, time_freeze: ->(value){ value.is_a?(Date) || value.is_a?(Time) } do |example|
+    Timecop.freeze(example.metadata[:time_freeze]){ example.run }
+  end
 end

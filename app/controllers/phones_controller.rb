@@ -43,7 +43,7 @@ class PhonesController < ApplicationController
   end
 
   def export
-    send_data Phone.export, type: 'text/csv', filename: "phones-#{DateTime.now.to_s(:number)}", disposition: 'inline'
+    send_data Phone.export, type: 'text/csv', filename: "phones-#{DateTime.now.to_s(:number)}.csv", disposition: 'attachment'
   end
 
   def process_import
