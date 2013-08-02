@@ -11,10 +11,12 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-group :test do
-  gem 'rspec'
-  gem 'rspec-rails', '~> 2.13.2', require: 'rspec/rails'
+group :development, :test do
+  gem 'rspec-rails', '~> 2.13.2'
   gem 'mongoid-rspec', '>= 1.8.1'
+end
+
+group :test do
   gem 'fabrication', '~> 2.7.2'
   gem 'database_cleaner', '>= 1.0.1'
   gem 'timecop', '>= 0.6.1'

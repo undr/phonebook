@@ -38,7 +38,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
-    database_cleaner (1.0.1)
+    database_cleaner (1.1.1)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -147,7 +147,6 @@ DEPENDENCIES
   mongoid-rspec (>= 1.8.1)
   pry
   rails (= 3.2.13)
-  rspec
   rspec-rails (~> 2.13.2)
   sass-rails (~> 3.2.3)
   timecop (>= 0.6.1)
