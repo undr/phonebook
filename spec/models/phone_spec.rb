@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 describe Phone do
-  it{ should have_fields(:name).of_type(String) }
-  it{ should have_fields(:number).of_type(String) }
-
-  it{ should validate_presence_of(:name) }
-  it{ should validate_presence_of(:number) }
-  it{ should validate_uniqueness_of(:name) }
-  it{ should validate_uniqueness_of(:number) }
-
   let(:csv_data){ <<-CSV
 name\tnumber
 John F. Kennedy\t+1 234 56 78

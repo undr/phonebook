@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-gem 'mongoid', '~> 3.1.4'
+gem 'mysql2'
 gem 'pry'
 gem 'jquery-rails'
 
@@ -13,7 +13,6 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.13.2'
-  gem 'mongoid-rspec', '>= 1.8.1'
 end
 
 group :test do

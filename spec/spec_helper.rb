@@ -10,15 +10,17 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.include Mongoid::Matchers
 
   config.before :suite do
-    DatabaseCleaner[:mongoid].strategy = :truncation
-    DatabaseCleaner[:mongoid].clean
+    DatabaseCleaner[:active_record].strategy = :transaction
+  end
+
+  config.before :each do
+    DatabaseCleaner[:active_record].start
   end
 
   config.after :each do
-    DatabaseCleaner[:mongoid].clean
+    DatabaseCleaner[:active_record].clean
   end
 
   config.around :each, time_freeze: ->(value){ value.is_a?(Date) || value.is_a?(Time) } do |example|

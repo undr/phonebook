@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PhonesController do
   describe "GET 'index'" do
-    let(:phones){ [Fabricate(:phone)] }
+    let!(:phones){ [Fabricate(:phone)] }
 
     before{ get :index }
 
