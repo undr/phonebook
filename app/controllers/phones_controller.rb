@@ -4,6 +4,7 @@ class PhonesController < ApplicationController
 
   def index
     @phones = Phone.all
+    @phone = Phone.new
   end
 
   def new

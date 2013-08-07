@@ -6,3 +6,8 @@ $ () ->
   $(document).on 'click', '#cancel-button', (event) ->
     $('#form-placeholder').html('')
     false
+
+  $(document).on 'click', '#create-button', (event) ->
+    $('#form-placeholder').html($('#create-form-template').html())
+    false
+  false
