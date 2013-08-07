@@ -39,7 +39,6 @@ describe "Phones" do
         fill_in 'Number', with: '+1 876 54 32'
       end
 
-      it{  }
       it 'should add new phone to list' do
         page.should_not have_selector('tr.phone')
 
