@@ -3,7 +3,7 @@ class PhonesController < ApplicationController
   before_filter :find_model, except: [:index, :new, :create, :export, :import, :process_import]
 
   def index
-    @phones = Phone.all
+    @phones = Phone.order('name')
     @phone = Phone.new
   end
 
