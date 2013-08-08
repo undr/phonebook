@@ -2,15 +2,34 @@ require 'spec_helper'
 
 describe PhonesController do
   describe "GET 'index'" do
-    let!(:kennedy){Fabricate(:phone)}
-    let!(:lincoln){Fabricate(:lincolns_phone)}
-    let!(:phones){ [lincoln, kennedy] }
+    let!(:kennedy){'kennedy'}
+    let!(:lincoln){'lincoln'}
 
-    before{ get :index }
+    context 'without query param' do
+      let(:phones){ [lincoln, kennedy] }
 
-    specify{ assigns(:phones).should eq(phones) }
-    specify{ response.should render_template :index}
-    specify{ response.should be_success }
+      before do
+        Phone.should_receive(:order).with('name').and_return(phones)
+        get :index
+      end
+
+      specify{ assigns(:phones).should eq(phones) }
+      specify{ response.should render_template :index}
+      specify{ response.should be_success }
+    end
+
+    context 'with query param' do
+      let(:phones){ [lincoln] }
+
+      before do
+        Phone.should_receive(:elastic_search).with('linc').and_return(phones)
+        get :index, query: 'linc'
+      end
+
+      specify{ assigns(:phones).should eq(phones) }
+      specify{ response.should render_template :index}
+      specify{ response.should be_success }
+    end
   end
 
   describe "GET 'new'" do

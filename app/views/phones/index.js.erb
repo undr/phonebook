@@ -1,0 +1,4 @@
+$('#phones').html('<%= j render "table_header" %>')
+<% @phones.each do |phone| %>
+    $('#phones').append( '<%= escape_javascript(render phone) %>' );
+<% end %>

@@ -3,8 +3,13 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ () ->
-  $(document).on 'click', '#cancel-button', (event) ->
+  $(document).on 'click', '#cancel-form-button', (event) ->
     $('#form-placeholder').html('')
+    false
+
+  $(document).on 'click', '#cancel-search-button', (event) ->
+    $('#search-form input[name="query"]').val('')
+    $('#search-form').submit()
     false
 
   $(document).on 'click', '#create-button', (event) ->

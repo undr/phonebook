@@ -1,10 +1,35 @@
 require 'csv'
 class Phone < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
   validates :name, :number, presence: true, uniqueness: true
   validates :number, format: {with: /^\+?([\d\#\s\-])*$/}
 
+  # after_touch{ tire.update_index }
+
+  mapping do
+    indexes :id, type: 'long', index: 'not_analyzed'
+    indexes :name, type: 'string', boost: 1.5, analyzer: 'snowball'
+    indexes :normalized_number, type: 'string', analyzer: 'snowball'
+    # indexes :number, index: 'not_analyzed', store: false
+  end
+
+  def normalized_number
+    number.gsub(/[^\d]/, '')
+  end
+
+  def to_indexed_json
+    {id: id, name: name, normalized_number: normalized_number}.to_json
+    #to_json(except: :number, include: :normalized_number)
+  end
+
   class << self
-    def import string, destroy_all = false
+    def elastic_search query
+      search(load: true){ query{ string "#{query}*" } }.results
+    end
+
+    def import_csv string, destroy_all = false
       invalid_phones = []
 
       Phone.transaction do
@@ -20,7 +45,7 @@ class Phone < ActiveRecord::Base
       invalid_phones
     end
 
-    def export
+    def export_csv
       CSV.generate(col_sep: "\t") do |csv|
         csv << %w{name number}
         self.all.each do |phone|

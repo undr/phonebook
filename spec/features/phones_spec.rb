@@ -19,6 +19,8 @@ describe "Phones" do
       find('table#phones').find("tr#phone-#{item2.id}").should have_link('Destroy')
 
       page.should have_link('Create new')
+      page.should have_selector('#search-form[action="/phones"][method="get"]')
+      find('#search-form').should have_button('Find')
     end
   end
 
@@ -80,7 +82,7 @@ describe "Phones" do
     end
   end
 
-  describe 'Edit phone', driver: :webkit do
+  describe 'Delete phone', driver: :webkit do
     let!(:item){ Fabricate(:phone) }
 
     before do

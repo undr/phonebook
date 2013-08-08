@@ -8,3 +8,6 @@
 
 Phone.create(name: 'John F. Kennedy', number: '+1 234 56 78')
 Phone.create(name: 'Abraham Lincoln', number: '+1 876 54 32')
+Phone.create(name: 'Richard Nixon', number: '+12 345 67 89')
+Phone.create(name: 'Mephisto', number: '+13 666-666-33#666')
+

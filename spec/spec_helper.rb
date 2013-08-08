@@ -17,6 +17,8 @@ RSpec.configure do |config|
 
   config.before :suite do
     DatabaseCleaner.strategy = :truncation
+    Phone.index.delete
+    Phone.create_elasticsearch_index
   end
 
   config.before :each do
@@ -29,5 +31,10 @@ RSpec.configure do |config|
 
   config.around :each, time_freeze: ->(value){ value.is_a?(Date) || value.is_a?(Time) } do |example|
     Timecop.freeze(example.metadata[:time_freeze]){ example.run }
+  end
+
+  config.after :each, elastic: true do
+    Phone.index.delete
+    Phone.create_elasticsearch_index
   end
 end

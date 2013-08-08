@@ -1,13 +1,16 @@
 <h1>Listing phones</h1>
 
-<table id='phones'>
-  <tr>
-    <th>Name</th>
-    <th>Number</th>
-    <th></th>
-    <th></th>
-  </tr>
+<hr />
+<%= form_tag phones_path, method: :get, id: 'search-form', remote: true do %>
+  <%= label_tag 'query', 'Search phones:' %>
+  <%= text_field_tag 'query', params[:query] %>
+  <%= submit_tag 'Find' %> | <%= link_to 'Reset', phones_path, id: 'cancel-search-button' %>
+<% end %>
+<hr />
 
+<table id='phones'>
+
+<%= render 'table_header' %>
 <%= render @phones %>
 
 </table>

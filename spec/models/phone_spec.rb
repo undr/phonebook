@@ -22,18 +22,30 @@ CSV
     specify{ not_allowed_symbols.valid?.should be_false }
   end
 
-  describe '.export' do
+  describe '.elastic_search', elastic: true do
+    let!(:item1){ Fabricate(:phone) }
+    let!(:item2){ Fabricate(:lincolns_phone, number: '+1 234 45 67') }
+
+    before{ Phone.index.refresh }
+
+    specify{ Phone.elastic_search('').should eq([item1, item2]) }
+    specify{ Phone.elastic_search('linc').should eq([item2]) }
+    specify{ Phone.elastic_search('kenn').should eq([item1]) }
+    specify{ Phone.elastic_search('1234').should eq([item1, item2]) }
+  end
+
+  describe '.export_csv' do
     let!(:item1){ Fabricate(:phone) }
     let!(:item2){ Fabricate(:lincolns_phone) }
 
-    specify{ Phone.export.should eq(csv_data) }
+    specify{ Phone.export_csv.should eq(csv_data) }
   end
 
-  describe '.import' do
+  describe '.import_csv' do
     context 'with empty phonebook' do
       before do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
       end
 
       subject{ Phone }
@@ -51,13 +63,13 @@ CSV
 
       it 'should not add new items' do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
         Phone.count.should eq(2)
       end
 
       it 'should change phone number' do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
         item2.reload
         item2.number.should eq('+1 876 54 32')
       end
@@ -69,7 +81,7 @@ CSV
 
       it 'should add new item' do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
         Phone.count.should eq(3)
       end
     end
@@ -86,13 +98,13 @@ CSV
 
       it 'should delete one items' do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
         Phone.count.should eq(1)
       end
 
       it "should delete Abraham Lincoln's phone number" do
         Phone.should_not_receive(:destroy_all)
-        Phone.import(csv_data)
+        Phone.import_csv(csv_data)
         Phone.where(name: 'Abraham Lincoln').count.should eq(0)
       end
     end
@@ -100,7 +112,7 @@ CSV
     context 'with destroy_all options' do
       it 'should destroy all phone numbers before importing' do
         Phone.should_receive(:destroy_all)
-        Phone.import(csv_data, true)
+        Phone.import_csv(csv_data, true)
       end
     end
 
@@ -108,7 +120,7 @@ CSV
       let!(:item1){ Fabricate(:phone) }
       let!(:item2){ Fabricate(:lincolns_phone, name: 'Richard Nixon') }
 
-      subject{Phone.import(csv_data)}
+      subject{Phone.import_csv(csv_data)}
 
       its(:size){ should eq(1) }
       its('first.name'){ should eq('Abraham Lincoln') }
